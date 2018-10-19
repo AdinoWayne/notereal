@@ -1,6 +1,7 @@
 defmodule Notereal.User do
     use Notereal.Web, :model
 
+    alias Notereal.Post
     # plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
 
     schema "users" do
@@ -8,6 +9,7 @@ defmodule Notereal.User do
         field :password, :string
         field :username, :string
         field :token, :string
+        has_many :post, Post
         timestamps()
     end
 

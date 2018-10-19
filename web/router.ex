@@ -21,6 +21,8 @@ defmodule Notereal.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/tags", TagController, except: [:new, :edit]
+    resources "/posts", PostController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.
