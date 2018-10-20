@@ -9,7 +9,7 @@ defmodule Notereal.User do
         field :password, :string
         field :username, :string
         field :token, :string
-        has_many :post, Post
+        has_many(:post, Post, foreign_key: :user_id) 
         timestamps()
     end
 

@@ -10,7 +10,7 @@ defmodule Notereal.PostController do
     def index(conn, _params) do
         case Repo.all(Post) do
             post -> 
-                json(conn, %{ success: true, result: PostView.render_meny("posts_list.json", post)})
+                json(conn, %{ success: true, result: PostView.render_many("posts_list.json", post)})
             nil ->
                 json(conn, %{ success: false, message: "Get Error"})
         end
@@ -33,24 +33,25 @@ defmodule Notereal.PostController do
         multi = 
             Multi.new()
                 |> Multi.run(:new_post, fn _ -> 
-                    %Post{
-                        inserted_at: "Time.utc_now",
-                        updated_at: "Time.utc_now",
-                    }
+                    %Post{}
                     |> Post.changeset(params)
                     |> Repo.insert()
                 end)
                 |> Multi.run(:new_result, fn %{new_post: new_post} -> 
                     for item <- list do
-                        query = from(s in Tag, where: s.tag == ^item )
-                        tag_id = Repo.one(query)
-                        elem = %{
-                            tag_id: tag_id.id,
-                            post_id: new_post.id
-                        }
-                        %Post_Tag{} = elem
-                        |> Post_Tag.changeset()
-                        |> Post_Tag.insert()
+                        case tag_id = Repo.one(from(t in Tag, where: t.tag == ^item)) do
+                            nil ->
+                                IO.inspect("Try it wrong")
+                            _ ->
+                                elem = %{
+                                    tag_id: tag_id.id,
+                                    post_id: new_post.id
+                                }
+                                %Post_Tag{}
+                                |> Post_Tag.changeset(elem)
+                                |> Repo.insert()
+                            
+                        end
                     end
                 end)
         case Repo.transaction(multi) do

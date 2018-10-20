@@ -13,7 +13,7 @@ defmodule Notereal.Post do
         field :vote, :string
         belongs_to(:user, User, foreign_key: :user_id)
         many_to_many :tags, Tag, join_through: "posts_tags"
-        has_many :posts_tags, Post_Tag
+        has_many :posts_tags, Post_Tag, foreign_key: :post_id
         timestamps()
     end
 
