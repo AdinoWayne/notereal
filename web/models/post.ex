@@ -4,7 +4,6 @@ defmodule Notereal.Post do
 
     alias Notereal.User
     alias Notereal.Tag
-    alias Notereal.Post_Tag
     # plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
 
     schema "posts" do
@@ -13,7 +12,6 @@ defmodule Notereal.Post do
         field :vote, :string
         belongs_to(:user, User, foreign_key: :user_id)
         many_to_many :tags, Tag, join_through: "posts_tags"
-        has_many :posts_tags, Post_Tag, foreign_key: :post_id
         timestamps()
     end
 

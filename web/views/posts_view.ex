@@ -1,7 +1,7 @@
 defmodule Notereal.PostView do
     use Notereal.Web, :view
 
-    def render("post_just_loaded.json", posts) do
+    def render("posts_just_loaded.json", posts) do
         Map.take(posts, [
           :id,
           :title,
