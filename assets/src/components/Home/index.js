@@ -15,6 +15,7 @@ const Promise = global.Promise;
 const mapStateToProps = state => ({
   ...state.home,
   appName: state.common.appName,
+  home: state.home,
   token: state.common.token
 });
 
@@ -28,7 +29,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Home extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     const tab = this.props.token ? 'feed' : 'all';
     const articlesPromise = this.props.token ?
       agent.Articles.feed :
@@ -42,6 +43,7 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log(this.props.tags)
     return (
       <div className="home-page">
 

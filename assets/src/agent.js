@@ -4,7 +4,7 @@ import _superagent from 'superagent';
 const superagent = superagentPromise(_superagent, global.Promise);
 
 const API_ROOT ="http://localhost:4000";
-
+// const API_ROOT = 'https://conduit.productionready.io/api';
 const encode = encodeURIComponent;
 const responseBody = res => res.body;
 
@@ -52,7 +52,7 @@ const Profile = {
 };
 const Articles = {
     all: page =>
-      requests.get(`/posts`),
+      requests.get(`/posts?${limit(10, page)}`),
     byAuthor: (author, page) =>
       requests.get(`/articles?author=${encode(author)}&${limit(5, page)}`),
     byTag: (tag, page) =>
