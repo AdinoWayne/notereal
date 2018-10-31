@@ -36,35 +36,35 @@ const ArticlePreview = props => {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <Link to={`/@${article.author.username}`}>
-          <img src={article.author.image} alt={article.author.username} />
+        <Link to={`/@${article.name[0]}`}>
+          <img src="https://i.pinimg.com/originals/f7/b9/18/f7b918bd0048caf8d2f2572ae566da1c.jpg" width="40"/>
         </Link>
 
         <div className="info">
-          <Link className="author" to={`/@${article.author.username}`}>
-            {article.author.username}
+          <Link className="author" to={`/@${article.name[0]}`}>
+            {article.name[0]}
           </Link>
           <span className="date">
-            {new Date(article.createdAt).toDateString()}
+            {new Date(article.inserted_at).toDateString()}
           </span>
         </div>
 
         <div className="pull-xs-right">
           <button className={favoriteButtonClass} onClick={handleClick}>
-            <i className="ion-heart"></i> {article.favoritesCount}
+            <i className="ion-heart"></i> {article.vote}
           </button>
         </div>
       </div>
 
       <Link to={`/article/${article.slug}`} className="preview-link">
         <h1>{article.title}</h1>
-        <p>{article.description}</p>
+        <p>{article.content}</p>
         <span>Read more...</span>
         <ul className="tag-list">
           {
-            article.tagList.map(tag => {
+            article.tags.map((tag,index) => {
               return (
-                <li className="tag-default tag-pill tag-outline" key={tag}>
+                <li className="tag-default tag-pill tag-outline" key={index}>
                   {tag}
                 </li>
               )

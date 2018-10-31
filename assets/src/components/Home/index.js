@@ -43,7 +43,6 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log(this.props.tags)
     return (
       <div className="home-page">
 
