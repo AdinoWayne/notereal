@@ -7,8 +7,8 @@ defmodule Notereal.PostController do
     alias Notereal.Tag
     alias Notereal.Post_Tag
 
-    def index(conn, _params) do
-        case Repo.all(Post) do
+    def index(conn, %{"limit" => limit, "offset" => offset }) do
+        case Repo.all(from(p in Post,join: a in Post_Tag, on: p.id == a.post_id,join: t in Tag, on: a.tag_id == t.id, select: {p, fragment("array_to_string(array_agg(?), ', ')", t.tag)}, limit: ^limit, offset: ^offset, group_by: p.id)) do
             post -> 
                 json(conn, %{ success: true, result: PostView.render_many("posts_list.json", post)})
             nil ->
