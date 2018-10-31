@@ -3,14 +3,29 @@ defmodule Notereal.PostController do
 
     alias Ecto.Multi
     alias Notereal.Post
+    alias Notereal.User
     alias Notereal.PostView
     alias Notereal.Tag
     alias Notereal.Post_Tag
 
     def index(conn, %{"limit" => limit, "offset" => offset }) do
-        case Repo.all(from(p in Post,join: a in Post_Tag, on: p.id == a.post_id,join: t in Tag, on: a.tag_id == t.id, select: {p, fragment("array_to_string(array_agg(?), ', ')", t.tag)}, limit: ^limit, offset: ^offset, group_by: p.id)) do
+        case Repo.all(from(p in Post,join: a in Post_Tag,
+        on: p.id == a.post_id,join: t in Tag, on: a.tag_id == t.id,
+        select: %{
+            id: p.id,
+            title: p.title,
+            content: p.content,
+            inserted_at: p.inserted_at,
+            tags: fragment("array_agg(?)", t.tag),
+            user: p.user_id,
+            vote: p.vote
+            },
+        limit: ^limit, offset: ^offset, group_by: p.id)) do
             post -> 
-                json(conn, %{ success: true, result: PostView.render_many("posts_list.json", post)})
+                result = Enum.map(post, fn elem -> 
+                    Map.put(elem, :name, Repo.all(from(u in User,where: u.id == ^elem.user, select: u.username)))
+                end)
+                json(conn, %{ success: true, result: PostView.render_many("posts_list.json", result)})
             nil ->
                 json(conn, %{ success: false, message: "Get Error"})
         end

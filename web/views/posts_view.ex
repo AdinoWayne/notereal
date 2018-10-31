@@ -6,6 +6,8 @@ defmodule Notereal.PostView do
           :id,
           :title,
           :content,
+          :tags,
+          :name,
           :vote,
           :inserted_at,
           :updated_at,
