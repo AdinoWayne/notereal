@@ -3,7 +3,7 @@ defmodule Notereal.UserController do
 
     alias Notereal.User
     alias Notereal.UserView
-
+    alias Notereal.Guardian
     def index(conn, _params) do
       case Repo.all(User) do
             post -> 
@@ -53,6 +53,10 @@ defmodule Notereal.UserController do
             nil ->
                 json(conn, %{ success: false, message: "Delete Failed" })
         end
+    end
+
+    def login(conn, %{"user" => params }) do
+        
     end
 end
   

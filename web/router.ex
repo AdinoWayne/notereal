@@ -24,6 +24,7 @@ defmodule Notereal.Router do
     resources "/users", UserController, except: [:new, :edit]
     resources "/tags", TagController, except: [:new, :edit]
     resources "/posts", PostController, except: [:new, :edit]
+    post "users/login", UserController, :login
   end
 
   # Other scopes may use custom stacks.
